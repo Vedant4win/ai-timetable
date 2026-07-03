@@ -38,7 +38,7 @@ function App() {
   useEffect(() => {
     if (isModalOpen && draftEvent.start && draftEvent.cognitiveLoad) {
       const hourOfDay = new Date(draftEvent.start).getHours();
-      axios.post('http://127.0.0.1:8000/api/predict/focus', {
+      axios.post('https://ai-timetable-python.onrender.com/api/predict/focus', {
         cognitive_load: draftEvent.cognitiveLoad,
         hour_of_day: hourOfDay
       }).then(res => setLivePrediction(res.data))
@@ -55,7 +55,7 @@ function App() {
 
   const fetchAiMetrics = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/api/analysis/focus-metrics');
+      const res = await axios.get('https://ai-timetable-python.onrender.com/api/analysis/focus-metrics');
       if (!res.data.error) setAiMetrics(res.data);
     } catch (err) {}
   };
@@ -101,7 +101,7 @@ function App() {
 
     try {
       // Send the plain English to the Python NLP route
-      const res = await axios.post('http://127.0.0.1:8000/api/schedule/nlp', {
+      const res = await axios.post('https://ai-timetable-python.onrender.com/api/schedule/nlp', {
         user_prompt: nlpPrompt,
         start_date: startDateString
       });
