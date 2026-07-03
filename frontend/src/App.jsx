@@ -48,7 +48,7 @@ function App() {
 
   const fetchEvents = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/events');
+      const res = await axios.get('https://ai-timetable-backend-lkq8.onrender.com/api/events');
       setEvents(res.data.map(e => ({ ...e, start: new Date(e.start), end: new Date(e.end) })));
     } catch (err) {}
   };
@@ -69,7 +69,7 @@ function App() {
   const handleSaveEvent = async () => {
     if (!draftEvent.title.trim()) return alert("Title required.");
     try {
-      const res = await axios.post('http://localhost:5000/api/events', draftEvent);
+      const res = await axios.post('https://ai-timetable-backend-lkq8.onrender.com/api/events', draftEvent);
       setEvents([...events, { ...res.data, start: new Date(res.data.start), end: new Date(res.data.end) }]);
       setIsModalOpen(false);
       fetchAiMetrics();
@@ -79,7 +79,7 @@ function App() {
   const handleClearSchedule = async () => {
   if (window.confirm("Are you sure you want to clear the entire schedule?")) {
     try {
-      const response = await fetch('http://localhost:8000/api/schedule/clear', {
+      const response = await fetch('https://ai-timetable-backend-lkq8.onrender.com/api/schedule/clear', {
         method: 'DELETE',
       });
       if (response.ok) {
@@ -111,7 +111,7 @@ function App() {
         const savedEvents = [];
         
         for (let block of blocks) {
-          const saveRes = await axios.post('http://localhost:5000/api/events', block);
+          const saveRes = await axios.post('https://ai-timetable-backend-lkq8.onrender.com/api/events', block);
           savedEvents.push({ ...saveRes.data, start: new Date(saveRes.data.start), end: new Date(saveRes.data.end) });
         }
         
@@ -138,7 +138,7 @@ function App() {
   const handleResolveEvent = async (status) => {
     try {
       const updatedData = { ...selectedEvent, status, ...(status === 'Completed' ? { focusScore } : {}) };
-      const res = await axios.put(`http://localhost:5000/api/events/${selectedEvent._id}`, updatedData);
+      const res = await axios.put(`https://ai-timetable-backend-lkq8.onrender.com/api/events/${selectedEvent._id}`, updatedData);
       setEvents(events.map(e => e._id === selectedEvent._id ? { ...res.data, start: new Date(res.data.start), end: new Date(res.data.end) } : e));
       setIsResolveModalOpen(false);
       fetchAiMetrics();
@@ -148,7 +148,7 @@ function App() {
   const handleDeleteEvent = async () => {
     if (window.confirm(`Permanently delete '${selectedEvent.title}'?`)) {
       try {
-        await axios.delete(`http://localhost:5000/api/events/${selectedEvent._id}`);
+        await axios.delete(`https://ai-timetable-backend-lkq8.onrender.com/api/events/${selectedEvent._id}`);
         setEvents(events.filter(e => e._id !== selectedEvent._id));
         setIsResolveModalOpen(false);
       } catch (err) {}
